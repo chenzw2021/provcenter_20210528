@@ -1,8 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.shortcuts import render
-from django_cluster_redis.cache import ClusterRedis
 from django_redis import get_redis_connection
+from .serializers import ProvRedisSerializer
 
 conn = get_redis_connection()
 
@@ -10,6 +10,7 @@ conn = get_redis_connection()
 class PyRedis(View):
 
     # def get(self, request):
+    #
     #     data = [{"project": "项目1",
     #              "test": "czw1",
     #              "msg": "111"},
@@ -24,11 +25,11 @@ class PyRedis(View):
 
     def get(self, request):
         # data = conn.get('{014401204022700008915720210506233530}OBU')
-        redis_gantrypassdata_val = ["ID", "PASSID", "GANTRYTYPE", "TYPE", "TRANSTIME",
-                                         "PAYFEE", "FEE", "DISCOUNTFEE", "SPECIALTYPE"]
-        redis_main_val = ["ID", "SERPROVINCEID", "ISSUERID", "MEDIATYPE", "EXITFEETYPE", "DATASOURCE", "EXTIME",
-                               "PAYFEE", "FEE", "DISCOUNTFEE", "SUMTOLLFEE", "UPLOADSTATUS", "EXPASSSTATUS",
-                               "GANTRYPASSDATA", 'OBUPROVFEESUMAFTER']
+        redis_gantrypassdata_val = ["id", "passid", "gantrytype", "type", "transtime",
+                                    "payfee", "fee", "discountfee", "specialtype"]
+        redis_main_val = ["id", "serprovinceid", "issuerid", "mediatype", "exitfeetype", "datasource", "extime",
+                          "payfee", "fee", "discountfee", "sumtollfee", "uploadstatus", "expassstatus",
+                          "gantrypassdata", 'obuprovfeesumafter']
         try:
             redis_msg = conn.get('{014401204022700008915720210506233530}OBU').decode().split(",")
         except AttributeError:
@@ -39,4 +40,7 @@ class PyRedis(View):
             redis_msg[-2] = "null" if not gantry_li else sorted(gantry_li, key=lambda x: (x["TRANSTIME"]))
             # 对gantrypassdata按transtime升序排列
             data = dict(zip(redis_main_val, redis_msg))
-        return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+            redis_obj = ProvRedisSerializer(instance=data)
+        # return JsonResponse(redis_obj.data, safe=False, json_dumps_params={'ensure_ascii': False})
+        return JsonResponse(redis_obj.data, json_dumps_params={'ensure_ascii': False})
+
