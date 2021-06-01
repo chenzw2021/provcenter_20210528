@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class ProvredisDetail(models.Model):
+class ConcatMain(models.Model):
     passid = models.CharField(verbose_name='车辆通行id', max_length=40, primary_key=True, help_text='车辆通行id')
     id = models.CharField(verbose_name='交易流水id', max_length=500, help_text='交易流水id')
     serprovinceid = models.CharField(verbose_name='通行方id', max_length=500, help_text='通行方id')
@@ -20,12 +20,12 @@ class ProvredisDetail(models.Model):
     obuprovfeesumafter = models.CharField(verbose_name='obu省内交易后金额', max_length=500, help_text='obu省内交易后金额')
 
     class Meta:
-        db_table = 'tb_redis_main'
+        db_table = 'tb_concat_main'
         verbose_name = '行程组合主表'
         verbose_name_plural = verbose_name
 
 
-class Provredis(models.Model):
+class ConcatDetail(models.Model):
     id = models.CharField(verbose_name='门架校验记录id', max_length=500,primary_key=True, help_text='门架校验记录id')
     passid = models.CharField(verbose_name='车辆通行id', max_length=40, help_text='车辆通行id')
     gantrytype = models.CharField(verbose_name='门架类型', max_length=500, help_text='门架类型')
@@ -37,7 +37,7 @@ class Provredis(models.Model):
     specialtype = models.CharField(verbose_name='特情类型', max_length=500, help_text='特情类型')
 
     class Meta:
-        db_table = 'tb_redis_detail'
+        db_table = 'tb_concat_detail'
         verbose_name = '行程组合子表'
         verbose_name_plural = verbose_name
 
