@@ -14,7 +14,8 @@ class ConcatView(View):
     #     data = concat_split(concat_val)
     #     redis_obj = ProvRedisSerializer(instance=data)
     #         # redis_obj.is_valid(raise_exception=True)
-    #     # return JsonResponse(redis_obj.data, safe=False, json_dumps_params={'ensure_ascii': False})
+    #     # return JsonResponse(redis_obj.data, safe=False,
+    #     json_dumps_params={'ensure_ascii': False})
     #     return JsonResponse(redis_obj.data)
 
     def post(self, request):
