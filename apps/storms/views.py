@@ -1,11 +1,11 @@
 import json
-from django.views.generic.base import View
+from rest_framework import viewsets
 from django.core import serializers
 from django.http import JsonResponse
 from .models import StormProjects
 
 
-class StormProjectView(View):
+class StormProjectView(viewsets.ModelViewSet):
     def get(self, request):
         """
         通过django的view实现课程列表页
